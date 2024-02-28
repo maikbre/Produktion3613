@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charsat="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produktionsstatistik 3613</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10;
+            padding: 0;
+            background-color: cadetblue;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        label{
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        select, input[type="number"] {
+            width: 10;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+    </style>
+</head>   
+<body>
+    <h1>Produktionsstatistik 3613</h1>
+
+    <label for="artikel">Artikelnummer</label>
+    <select id="artikel" onchange="zeigeDetails()">
+        <option value="16940">16940</option>
+        <option value="19989">19989</option>
+        <option value="16664/65/66">16664/65/66</option>
+    </select>
+
+    <p id="zyklusAnzeige"></p>
+    <p id="platinenAnzeige"></p>
+    <p id="anzahlPaketeAnzeige"></p>
+    <p id="ertragszahlAnzeige"></p>
+   
+    <label for="anzahlPakete">Anzahl der Pakete:</label>
+    <input type="number" id="anzahlPakete">
+
+    <label for="ertragsZahl">Ertrag:</label>
+    <input type="number" id="ertragszahl">
+
+    <p id="auschussAnzeige"></p>
+    <p id="nutzgradAnzeige"></p>
+
+    <script>  
+        function zeigeDetails() {
+            var artikelSelect = document.getElementById("artikel");
+            var ausgewählterArtikel = artikelSelect.value;
+            var zyklus;
+            var platinenProPaket;
+            var auschuss;
+            var nutzgrad;
+
+            switch (ausgewählterArtikel) {
+            case "16940":
+                zyklus = 2.1;
+                platinenProPaket = 2;
+                break;
+            case "19989":
+                zyklus = 2,6;
+                platinenProPaket = 4;
+                break;
+            case "16664/65/66":
+                zyklus = 3;
+                platinenProPaket = 3;
+                break;        
+            default:
+                zyklus = "unbekannt";
+                platinenProPaket = "unbekannt";
+                break;
+            }
+
+            var anzahlPakete = parseInt(document.getElementById("anzahlPakete").value);
+            var ertragszahl = parseInt(document.getElementById("ertragszahl").value);
+            
+            document.getElementById("zyklusAnzeige").innerHTML = "Zyklus: " + zyklus;
+            document.getElementById("platinenAnzeige").innerHTML = "Platinen pro Paket: " + platinenProPaket;
+
+            var auschuss = (platinenProPaket * anzahlPakete) - ertragszahl;
+            document.getElementById("auschussAnzeige").innerHTML = "Auschuss: " + auschuss
+            
+            var nutzgrad = (ertragszahl / (zyklus * platinenProPaket * 450))*100
+            nutzgrad = nutzgrad.toFixed(2) + "%";
+            document.getElementById("nutzgradAnzeige").innerHTML = "Nutzgrad: " + nutzgrad
+
+            }
+
+            document.getElementById("anzahlPakete").addEventListener("change", zeigeDetails);
+            document.getElementById("ertragszahl").addEventListener("change", zeigeDetails)
+
+
+            zeigeDetails();    
+    </script>
+</body>
+
+</html>
